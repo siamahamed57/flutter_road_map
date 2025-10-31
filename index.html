@@ -12,25 +12,70 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #000000;
             color: #e0e0e0;
             min-height: 100vh;
-            padding: 20px;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Animated dot grid background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                radial-gradient(circle at center, rgba(120, 119, 198, 0.3) 1px, transparent 1px);
+            background-size: 30px 30px;
+            z-index: 0;
+            animation: gridMove 20s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% { background-position: 0 0; }
+            100% { background-position: 30px 30px; }
+        }
+
+        /* Gradient overlays */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(138, 43, 226, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(0, 191, 255, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 40% 80%, rgba(255, 0, 255, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
         }
 
         .container {
-            max-width: 1400px;
+            max-width: 1600px;
             margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
         }
 
+        /* Header with glowing effect */
         header {
             text-align: center;
             margin-bottom: 40px;
-            padding: 30px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 15px;
-            box-shadow: 0 10px 40px rgba(102, 126, 234, 0.3);
+            padding: 60px 30px;
+            background: rgba(10, 10, 20, 0.8);
+            border-radius: 24px;
+            border: 1px solid rgba(138, 43, 226, 0.3);
+            box-shadow: 
+                0 0 60px rgba(138, 43, 226, 0.3),
+                inset 0 0 60px rgba(138, 43, 226, 0.05);
+            backdrop-filter: blur(10px);
             position: relative;
             overflow: hidden;
         }
@@ -42,239 +87,547 @@
             left: -50%;
             width: 200%;
             height: 200%;
-            background: repeating-linear-gradient(
+            background: linear-gradient(
                 45deg,
-                transparent,
-                transparent 10px,
-                rgba(255,255,255,0.05) 10px,
-                rgba(255,255,255,0.05) 20px
+                transparent 30%,
+                rgba(138, 43, 226, 0.1) 50%,
+                transparent 70%
             );
-            animation: scan 20s linear infinite;
+            animation: shine 3s infinite;
         }
 
-        @keyframes scan {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(50%, 50%); }
+        @keyframes shine {
+            0%, 100% { transform: translate(-100%, -100%) rotate(45deg); }
+            50% { transform: translate(100%, 100%) rotate(45deg); }
         }
 
         h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
-            text-shadow: 0 0 20px rgba(255,255,255,0.5);
-            position: relative;
-            z-index: 1;
-        }
-
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .stat-card {
-            background: rgba(255,255,255,0.05);
-            border: 2px solid rgba(102, 126, 234, 0.3);
-            border-radius: 10px;
-            padding: 20px;
-            text-align: center;
-            transition: all 0.3s ease;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-5px);
-            border-color: #667eea;
-            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
-        }
-
-        .stat-number {
-            font-size: 2.5em;
-            font-weight: bold;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-size: 3.5em;
+            font-weight: 900;
+            background: linear-gradient(135deg, #8a2be2, #00bfff, #ff00ff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+            text-shadow: 0 0 80px rgba(138, 43, 226, 0.5);
+            letter-spacing: 2px;
+        }
+
+        .subtitle {
+            font-size: 1.2em;
+            color: #a0a0ff;
+            position: relative;
+            z-index: 1;
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+
+        /* Stats cards with glassmorphism */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: rgba(15, 15, 30, 0.6);
+            border: 1px solid rgba(138, 43, 226, 0.3);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(138, 43, 226, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .stat-card:hover::before {
+            left: 100%;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            border-color: #8a2be2;
+            box-shadow: 
+                0 20px 60px rgba(138, 43, 226, 0.4),
+                inset 0 0 20px rgba(138, 43, 226, 0.1);
+        }
+
+        .stat-number {
+            font-size: 3em;
+            font-weight: 900;
+            background: linear-gradient(135deg, #8a2be2, #00bfff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 8px;
         }
 
         .stat-label {
-            color: #a0a0a0;
-            margin-top: 5px;
-            font-size: 0.9em;
+            color: #9090ff;
+            font-size: 0.95em;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
-        .milestones {
+        /* Main content layout */
+        .content-grid {
             display: grid;
-            gap: 25px;
+            grid-template-columns: 300px 1fr;
+            gap: 30px;
+            margin-bottom: 100px;
         }
 
-        .milestone {
-            background: rgba(255,255,255,0.03);
-            border: 2px solid rgba(102, 126, 234, 0.2);
-            border-radius: 15px;
+        /* Tracking Map Sidebar */
+        .tracking-map {
+            background: rgba(15, 15, 30, 0.6);
+            border: 1px solid rgba(138, 43, 226, 0.3);
+            border-radius: 20px;
             padding: 25px;
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 20px;
+            height: fit-content;
+            max-height: calc(100vh - 40px);
+            overflow-y: auto;
+        }
+
+        .map-title {
+            font-size: 1.3em;
+            font-weight: 700;
+            background: linear-gradient(135deg, #8a2be2, #00bfff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .map-nodes {
+            position: relative;
+            padding-left: 15px;
+        }
+
+        .map-line {
+            position: absolute;
+            left: 11px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(180deg, 
+                rgba(138, 43, 226, 0.5) 0%, 
+                rgba(0, 191, 255, 0.5) 50%,
+                rgba(255, 0, 255, 0.5) 100%
+            );
+        }
+
+        .map-node {
+            position: relative;
+            margin-bottom: 20px;
+            cursor: pointer;
             transition: all 0.3s ease;
         }
 
+        .map-node:hover {
+            transform: translateX(5px);
+        }
+
+        .map-node-dot {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: rgba(30, 30, 50, 0.8);
+            border: 2px solid rgba(138, 43, 226, 0.5);
+            position: absolute;
+            left: -15px;
+            top: 5px;
+            z-index: 2;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7em;
+        }
+
+        .map-node.completed .map-node-dot {
+            background: linear-gradient(135deg, #8a2be2, #00bfff);
+            border-color: #00bfff;
+            box-shadow: 0 0 20px rgba(138, 43, 226, 0.8);
+        }
+
+        .map-node.active .map-node-dot {
+            border-color: #8a2be2;
+            box-shadow: 0 0 20px rgba(138, 43, 226, 0.6);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        .map-node-label {
+            font-size: 0.85em;
+            color: #808080;
+            padding-left: 20px;
+            transition: color 0.3s ease;
+        }
+
+        .map-node.completed .map-node-label {
+            color: #00bfff;
+            font-weight: 600;
+        }
+
+        .map-node.active .map-node-label {
+            color: #8a2be2;
+            font-weight: 600;
+        }
+
+        /* Milestones section */
+        .milestones {
+            display: grid;
+            gap: 30px;
+        }
+
+        .milestone {
+            background: rgba(15, 15, 30, 0.6);
+            border: 1px solid rgba(138, 43, 226, 0.3);
+            border-radius: 24px;
+            padding: 30px;
+            transition: all 0.4s ease;
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .milestone::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(138, 43, 226, 0.1) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .milestone:hover::before {
+            opacity: 1;
+        }
+
         .milestone:hover {
-            border-color: rgba(102, 126, 234, 0.5);
+            border-color: rgba(138, 43, 226, 0.6);
+            box-shadow: 0 10px 40px rgba(138, 43, 226, 0.3);
         }
 
         .milestone.completed {
-            border-color: #4caf50;
-            background: rgba(76, 175, 80, 0.1);
+            border-color: rgba(0, 191, 255, 0.5);
+            background: rgba(0, 191, 255, 0.05);
         }
 
         .milestone-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             flex-wrap: wrap;
-            gap: 10px;
+            gap: 15px;
         }
 
         .milestone-title {
-            font-size: 1.3em;
-            font-weight: bold;
-            color: #667eea;
+            font-size: 1.5em;
+            font-weight: 700;
+            color: #8a2be2;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
         }
 
         .milestone.completed .milestone-title {
-            color: #4caf50;
+            color: #00bfff;
         }
 
         .milestone-icon {
-            font-size: 1.5em;
+            font-size: 1.8em;
+            filter: drop-shadow(0 0 10px rgba(138, 43, 226, 0.5));
         }
 
         .milestone-complete-btn {
-            padding: 8px 20px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border: none;
-            border-radius: 8px;
+            padding: 12px 28px;
+            background: linear-gradient(135deg, #8a2be2, #6a1bb2);
+            border: 1px solid rgba(138, 43, 226, 0.5);
+            border-radius: 12px;
             color: white;
-            font-weight: bold;
+            font-weight: 700;
             cursor: pointer;
             transition: all 0.3s ease;
-            font-size: 0.9em;
+            font-size: 0.95em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .milestone-complete-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.5s, height 0.5s;
+        }
+
+        .milestone-complete-btn:hover::before {
+            width: 300px;
+            height: 300px;
         }
 
         .milestone-complete-btn:hover {
             transform: scale(1.05);
-            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.5);
+            box-shadow: 0 5px 30px rgba(138, 43, 226, 0.6);
         }
 
         .milestone-complete-btn.completed {
-            background: #4caf50;
+            background: linear-gradient(135deg, #00bfff, #0080ff);
+            border-color: rgba(0, 191, 255, 0.5);
         }
 
         .milestone-goal {
-            color: #a0a0a0;
+            color: #9090ff;
             font-style: italic;
-            margin-bottom: 15px;
-            padding: 10px;
-            background: rgba(255,255,255,0.02);
+            margin-bottom: 20px;
+            padding: 15px;
+            background: rgba(138, 43, 226, 0.05);
+            border-left: 3px solid #8a2be2;
             border-radius: 8px;
+            font-size: 0.95em;
         }
 
         .tasks {
             display: grid;
-            gap: 10px;
+            gap: 12px;
+            margin-bottom: 20px;
         }
 
         .task {
             display: flex;
             align-items: center;
             gap: 15px;
-            padding: 12px;
-            background: rgba(255,255,255,0.05);
-            border-radius: 8px;
+            padding: 15px;
+            background: rgba(20, 20, 40, 0.4);
+            border: 1px solid rgba(138, 43, 226, 0.2);
+            border-radius: 12px;
             transition: all 0.3s ease;
         }
 
         .task:hover {
-            background: rgba(255,255,255,0.08);
+            background: rgba(30, 30, 50, 0.6);
+            border-color: rgba(138, 43, 226, 0.4);
+            transform: translateX(5px);
         }
 
         .task.completed {
-            opacity: 0.6;
+            opacity: 0.5;
+            border-color: rgba(0, 191, 255, 0.3);
         }
 
         .task-checkbox {
-            width: 24px;
-            height: 24px;
+            width: 22px;
+            height: 22px;
+            min-width: 22px;
             cursor: pointer;
-            accent-color: #667eea;
+            accent-color: #8a2be2;
+            border-radius: 4px;
+            position: relative;
+            z-index: 10;
         }
 
         .task-text {
             flex: 1;
             font-size: 0.95em;
+            color: #d0d0d0;
         }
 
         .task.completed .task-text {
             text-decoration: line-through;
-            color: #888;
+            color: #606060;
         }
 
         .progress-bar {
             width: 100%;
-            height: 8px;
-            background: rgba(255,255,255,0.1);
+            height: 10px;
+            background: rgba(255, 255, 255, 0.05);
             border-radius: 10px;
             overflow: hidden;
-            margin-top: 15px;
+            margin-top: 20px;
+            border: 1px solid rgba(138, 43, 226, 0.2);
         }
 
         .progress-fill {
             height: 100%;
-            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(90deg, #8a2be2 0%, #00bfff 100%);
             border-radius: 10px;
-            transition: width 0.5s ease;
-            box-shadow: 0 0 10px rgba(102, 126, 234, 0.5);
+            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 0 20px rgba(138, 43, 226, 0.6);
+            position: relative;
+        }
+
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
         }
 
         .milestone.completed .progress-fill {
-            background: linear-gradient(90deg, #4caf50 0%, #45a049 100%);
+            background: linear-gradient(90deg, #00bfff 0%, #0080ff 100%);
         }
 
         .progress-text {
             text-align: right;
             font-size: 0.85em;
-            color: #a0a0a0;
-            margin-top: 5px;
+            color: #9090ff;
+            margin-top: 8px;
+            font-weight: 600;
         }
 
+        /* Reset button with premium style */
         .reset-btn {
             position: fixed;
             bottom: 30px;
             right: 30px;
-            padding: 15px 30px;
-            background: rgba(244, 67, 54, 0.8);
-            border: none;
-            border-radius: 10px;
+            padding: 18px 35px;
+            background: linear-gradient(135deg, #ff0066, #cc0052);
+            border: 1px solid rgba(255, 0, 102, 0.5);
+            border-radius: 16px;
             color: white;
-            font-weight: bold;
+            font-weight: 700;
             cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 5px 20px rgba(244, 67, 54, 0.3);
+            box-shadow: 0 10px 40px rgba(255, 0, 102, 0.4);
+            z-index: 1000;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            backdrop-filter: blur(10px);
         }
 
         .reset-btn:hover {
-            background: rgba(244, 67, 54, 1);
-            transform: scale(1.05);
+            transform: scale(1.08) translateY(-2px);
+            box-shadow: 0 15px 50px rgba(255, 0, 102, 0.6);
+        }
+
+        /* Scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(20, 20, 40, 0.5);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #8a2be2, #00bfff);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(180deg, #6a1bb2, #0080ff);
+        }
+
+        /* Responsive design */
+        @media (max-width: 1200px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .tracking-map {
+                position: relative;
+                top: 0;
+                max-height: 400px;
+            }
         }
 
         @media (max-width: 768px) {
             h1 {
-                font-size: 1.8em;
+                font-size: 2.2em;
             }
-            
+
+            .subtitle {
+                font-size: 1em;
+            }
+
             .stats {
                 grid-template-columns: repeat(2, 1fr);
+            }
+
+            .stat-card {
+                padding: 20px;
+            }
+
+            .stat-number {
+                font-size: 2.2em;
+            }
+
+            .milestone-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .reset-btn {
+                bottom: 20px;
+                right: 20px;
+                padding: 15px 25px;
+                font-size: 0.9em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 15px;
+            }
+
+            header {
+                padding: 40px 20px;
+            }
+
+            h1 {
+                font-size: 1.8em;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -282,32 +635,45 @@
 <body>
     <div class="container">
         <header>
-            <h1>🎮 Flutter Quest Tracker</h1>
-            <p>Level up your Flutter skills milestone by milestone!</p>
+            <h1>⚡ FLUTTER QUEST ⚡</h1>
+            <p class="subtitle">Master the Flutter Universe • Level Up Your Skills</p>
         </header>
 
         <div class="stats">
             <div class="stat-card">
                 <div class="stat-number" id="completedMilestones">0</div>
-                <div class="stat-label">Milestones Completed</div>
+                <div class="stat-label">Milestones</div>
             </div>
             <div class="stat-card">
                 <div class="stat-number" id="completedTasks">0</div>
-                <div class="stat-label">Tasks Completed</div>
+                <div class="stat-label">Tasks Done</div>
             </div>
             <div class="stat-card">
                 <div class="stat-number" id="totalProgress">0%</div>
-                <div class="stat-label">Total Progress</div>
+                <div class="stat-label">Progress</div>
             </div>
             <div class="stat-card">
                 <div class="stat-number" id="currentLevel">1</div>
-                <div class="stat-label">Current Level</div>
+                <div class="stat-label">Level</div>
             </div>
         </div>
 
-        <div class="milestones" id="milestonesContainer"></div>
+        <div class="content-grid">
+            <div class="tracking-map">
+                <div class="map-title">
+                    <span>🗺️</span>
+                    <span>Quest Map</span>
+                </div>
+                <div class="map-nodes">
+                    <div class="map-line"></div>
+                    <div id="mapNodesContainer"></div>
+                </div>
+            </div>
 
-        <button class="reset-btn" onclick="resetProgress()">🔄 Reset All Progress</button>
+            <div class="milestones" id="milestonesContainer"></div>
+        </div>
+
+        <button class="reset-btn" onclick="resetProgress()">🔄 Reset Progress</button>
     </div>
 
     <script>
@@ -522,8 +888,7 @@
             const key = `${milestoneId}-${taskIndex}`;
             progress[key] = !progress[key];
             saveProgress(progress);
-            renderMilestones();
-            updateStats();
+            renderAll();
         }
 
         function toggleMilestone(milestoneId) {
@@ -531,8 +896,49 @@
             const milestoneKey = `milestone-${milestoneId}`;
             progress[milestoneKey] = !progress[milestoneKey];
             saveProgress(progress);
-            renderMilestones();
-            updateStats();
+            renderAll();
+        }
+
+        function scrollToMilestone(milestoneId) {
+            const element = document.getElementById(`milestone-${milestoneId}`);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+
+        function renderMapNodes() {
+            const progress = loadProgress();
+            const container = document.getElementById('mapNodesContainer');
+            container.innerHTML = '';
+
+            let firstIncomplete = null;
+
+            milestones.forEach((milestone, index) => {
+                const milestoneKey = `milestone-${milestone.id}`;
+                const isCompleted = progress[milestoneKey] || false;
+                
+                let completedTasksCount = 0;
+                milestone.tasks.forEach((task, taskIndex) => {
+                    const taskKey = `${milestone.id}-${taskIndex}`;
+                    if (progress[taskKey]) completedTasksCount++;
+                });
+
+                const isActive = !isCompleted && firstIncomplete === null;
+                if (isActive) firstIncomplete = milestone.id;
+
+                const nodeDiv = document.createElement('div');
+                nodeDiv.className = `map-node ${isCompleted ? 'completed' : ''} ${isActive ? 'active' : ''}`;
+                nodeDiv.onclick = () => scrollToMilestone(milestone.id);
+
+                nodeDiv.innerHTML = `
+                    <div class="map-node-dot">${isCompleted ? '✓' : milestone.id}</div>
+                    <div class="map-node-label">
+                        ${milestone.icon} M${milestone.id}
+                    </div>
+                `;
+
+                container.appendChild(nodeDiv);
+            });
         }
 
         function renderMilestones() {
@@ -554,6 +960,7 @@
 
                 const milestoneDiv = document.createElement('div');
                 milestoneDiv.className = `milestone ${isMilestoneCompleted ? 'completed' : ''}`;
+                milestoneDiv.id = `milestone-${milestone.id}`;
                 
                 let tasksHTML = '';
                 milestone.tasks.forEach((task, index) => {
@@ -564,7 +971,7 @@
                             <input type="checkbox" 
                                    class="task-checkbox" 
                                    ${isCompleted ? 'checked' : ''} 
-                                   onchange="toggleTask(${milestone.id}, ${index})">
+                                   onclick="event.stopPropagation(); toggleTask(${milestone.id}, ${index})">
                             <span class="task-text">${task}</span>
                         </div>
                     `;
@@ -586,7 +993,7 @@
                     <div class="progress-bar">
                         <div class="progress-fill" style="width: ${progressPercent}%"></div>
                     </div>
-                    <div class="progress-text">${completedTasksCount} / ${milestone.tasks.length} tasks completed (${progressPercent}%)</div>
+                    <div class="progress-text">${completedTasksCount} / ${milestone.tasks.length} tasks • ${progressPercent}% complete</div>
                 `;
 
                 container.appendChild(milestoneDiv);
@@ -620,17 +1027,21 @@
             document.getElementById('currentLevel').textContent = currentLevel;
         }
 
+        function renderAll() {
+            renderMapNodes();
+            renderMilestones();
+            updateStats();
+        }
+
         function resetProgress() {
-            if (confirm('Are you sure you want to reset all progress? This cannot be undone!')) {
+            if (confirm('⚠️ Are you sure you want to reset all progress?\n\nThis action cannot be undone!')) {
                 localStorage.removeItem('flutterProgress');
-                renderMilestones();
-                updateStats();
+                renderAll();
             }
         }
 
         // Initialize
-        renderMilestones();
-        updateStats();
+        renderAll();
     </script>
 </body>
 </html>
